@@ -3,7 +3,7 @@ const { Client, GatewayIntentBits, ActionRowBuilder, StringSelectMenuBuilder, Em
 const { deployCommands } = require('./deploy-commands');  // Command deployment function
 
 // Bot ID and Server ID directly included
-const botId = 'YOUR_BOT_ID';  // Replace with your actual bot ID
+const botId = '1350787557134176266';  // Replace with your actual bot ID
 
 // Client setup
 const client = new Client({
