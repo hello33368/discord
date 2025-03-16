@@ -3,12 +3,11 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 
-const clientId = '1350787557134176266';  // Replace with your bot's client ID
-const guildId = '1332833538587885618';    // Replace with your guild/server ID
+const clientId = 'YOUR_CLIENT_ID';  // Replace with your bot's client ID
+const guildId = 'YOUR_GUILD_ID';    // Replace with your guild/server ID
 
 const commands = [
-    new SlashCommandBuilder().setName('mymenu').setDescription('Opens a dropdown menu!'),
-    // Add other commands here if needed
+    new SlashCommandBuilder().setName('dropdown').setDescription('Opens a dropdown menu with options!')
 ]
     .map(command => command.toJSON());
 
