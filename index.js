@@ -1,5 +1,5 @@
-require('dotenv').config(); // This ensures the environment variables are loaded
 const { Client, GatewayIntentBits, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder } = require('discord.js');
+require('dotenv').config(); // Ensures that environment variables are loaded
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
@@ -9,10 +9,11 @@ client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
 });
 
-// Listening for pinging with the word "dropdown" in messages
+// Listening for pinging with the bot's mention
 client.on('messageCreate', async (message) => {
-    // Check if the bot is pinged and the message contains "dropdown"
+    // Check if the message mentions the bot
     if (message.mentions.has(client.user)) {
+        // Create the dropdown menu
         const selectMenu = new StringSelectMenuBuilder()
             .setCustomId('select')
             .setPlaceholder('Choose an option...')
