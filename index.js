@@ -3,7 +3,7 @@ const { Client, GatewayIntentBits, ActionRowBuilder, StringSelectMenuBuilder, Em
 const { deployCommands } = require('./deploy-commands');  // Command deployment function
 
 // Bot ID and Server ID directly included
-const botId = '1350787557134176266';  // Replace with your actual bot ID
+const botId = 'YOUR_BOT_ID';  // Replace with your actual bot ID
 
 // Client setup
 const client = new Client({
@@ -37,8 +37,7 @@ client.on('interactionCreate', async (interaction) => {
                 .setTitle('**Information**')
                 .setDescription('Welcome to TLM! Make sure you read the Handbook, buy and wear the uniform, and check the rules before joining any deployments!');
 
-            // Send a message in the channel instead of replying
-            await interaction.channel.send({ embeds: [embed], components: [row] });
+            await interaction.reply({ embeds: [embed], components: [row] });
         }
     }
 
@@ -72,8 +71,7 @@ client.on('interactionCreate', async (interaction) => {
             );
         }
 
-        // Send a message in the channel instead of replying
-        await interaction.channel.send({ embeds: [responseEmbed] });
+        await interaction.reply({ embeds: [responseEmbed], ephemeral: true });
     }
 });
 
