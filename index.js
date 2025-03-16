@@ -30,7 +30,11 @@ client.on('interactionCreate', async (interaction) => {
             .setTitle('**Information**') // Title remains the same
             .setDescription('Welcome to TLM! Make sure you read the Handbook, buy and wear the uniform, and check the rules before joining any deployments!');
 
-        await interaction.reply({ embeds: [embed], components: [row] });
+        // Send the embed and dropdown as a new message
+        await interaction.channel.send({ embeds: [embed], components: [row] });
+
+        // Acknowledge the interaction (required for slash commands)
+        await interaction.deferReply({ ephemeral: true });
     }
 });
 
