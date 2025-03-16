@@ -9,40 +9,10 @@ client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
 });
 
-// Listening for interaction with /dropdown command
-client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isCommand()) return;
-
-    if (interaction.commandName === 'dropdown') {
-        const selectMenu = new StringSelectMenuBuilder()
-            .setCustomId('select')
-            .setPlaceholder('Choose an option...')
-            .addOptions([
-                { label: 'Handbook', value: 'handbook', description: 'Link to the handbook' },
-                { label: 'Rules', value: 'rules', description: 'Rules Channel' },
-                { label: 'Uniform', value: 'uniform', description: 'Link to the uniform' },
-                { label: 'Vehicle Restrictions', value: 'vehicle', description: 'Information on vehicle restrictions' }, // Added dropdown for Vehicle Restrictions
-            ]);
-
-        const row = new ActionRowBuilder().addComponents(selectMenu);
-
-        const embed = new EmbedBuilder()
-            .setColor(129936)
-            .setTitle('**Information**') // Title remains the same
-            .setDescription('Welcome to TLM! Make sure you read the Handbook, buy and wear the uniform, and check the rules before joining any deployments!');
-
-        // Send the embed and dropdown as a new message
-        await interaction.channel.send({ embeds: [embed], components: [row] });
-
-        // Acknowledge the interaction (required for slash commands)
-        await interaction.deferReply({ ephemeral: true });
-    }
-});
-
 // Listening for pinging with the word "dropdown" in messages
 client.on('messageCreate', async (message) => {
     // Check if the bot is pinged and the message contains "dropdown"
-    if (message.mentions.has(client.user) && message.content.toLowerCase().includes('dropdown')) {
+    if (message.mentions.has(client.user)) {
         const selectMenu = new StringSelectMenuBuilder()
             .setCustomId('select')
             .setPlaceholder('Choose an option...')
