@@ -18,7 +18,7 @@ client.on('interactionCreate', async (interaction) => {
             .setPlaceholder('Choose an option...')
             .addOptions([
                 { label: 'Handbook', value: 'handbook', description: 'Link to the handbook' },
-                { label: 'Rules', value: 'rules', description: 'Link to the rules' },
+                { label: 'Rules', value: 'rules', description: 'Rules Channel' },
                 { label: 'Uniform', value: 'uniform', description: 'Link to the uniform' },
             ]);
 
@@ -41,7 +41,7 @@ client.on('interactionCreate', async (interaction) => {
     if (interaction.values[0] === 'handbook') {
         responseEmbed.setTitle('Handbook').setDescription('[Link to the Handbook](https://docs.google.com/document/d/1x1ZR0G78dNa6oEx7GdflsLD3ZLzrwojEjmuDPP9a2B4/edit?usp=sharing)');
     } else if (interaction.values[0] === 'rules') {
-        responseEmbed.setTitle('Rules').setDescription('Please check the #rules channel!');
+        responseEmbed.setTitle('Rules').setDescription('Please check the <#1333039858473500743> channel for the rules!');
     } else if (interaction.values[0] === 'uniform') {
         responseEmbed.setTitle('Uniform').setDescription('[Uniform Link](https://www.roblox.com/catalog/85787972042536/TLM-Shirt)');
     }
