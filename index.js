@@ -26,9 +26,9 @@ client.on('interactionCreate', async (interaction) => {
         const row = new ActionRowBuilder().addComponents(selectMenu);
 
         const embed = new EmbedBuilder()
-            .setColor(0x0099ff)
+            .setColor(129936)
             .setTitle('**Information**') // Title remains the same
-            .setDescription('Welcome to TLM! Make sure you read the Handbook, wear the uniform, and check the rules before joining any deployments!');
+            .setDescription('Welcome to TLM! Make sure you read the Handbook, buy and wear the uniform, and check the rules before joining any deployments!');
 
         await interaction.reply({ embeds: [embed], components: [row] });
     }
@@ -37,7 +37,7 @@ client.on('interactionCreate', async (interaction) => {
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isStringSelectMenu()) return;
 
-    let responseEmbed = new EmbedBuilder().setColor(0x0099ff);
+    let responseEmbed = new EmbedBuilder().setColor(129936);
 
     if (interaction.values[0] === 'handbook') {
         responseEmbed.setTitle('**Handbook**').setDescription('[Link to the Handbook](https://docs.google.com/document/d/1x1ZR0G78dNa6oEx7GdflsLD3ZLzrwojEjmuDPP9a2B4/edit?usp=sharing)');
@@ -60,8 +60,8 @@ client.on('interactionCreate', async (interaction) => {
             '**2020 Bullhorn Prancer Widebody**: 🟡\n' +
             '**2024 Celestial Truckatron**: 🟡\n\n' +
             '**Vehicle Accessories**:\n' +
-            'Vehicle Colors: Only **MOSS**\n' +
-            'Rim Color: Only **FOSSIL**'
+            'Vehicle Colors: **Only MOSS**\n' +
+            'Rim Color: **Only FOSSIL**'
         );
     }
 
