@@ -10,7 +10,6 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async (interaction) => {
-    // Check if it's a slash command
     if (!interaction.isCommand()) return;
 
     if (interaction.commandName === 'dropdown') {
@@ -18,21 +17,9 @@ client.on('interactionCreate', async (interaction) => {
             .setCustomId('select')
             .setPlaceholder('Choose an option...')
             .addOptions([
-                {
-                    label: 'Handbook',
-                    value: 'handbook',
-                    description: 'View the handbook'
-                },
-                {
-                    label: 'Rules',
-                    value: 'rules',
-                    description: 'View the rules channel'
-                },
-                {
-                    label: 'Uniform',
-                    value: 'uniform',
-                    description: 'View the uniform link'
-                }
+                { label: 'Handbook', value: 'handbook', description: 'Link to the handbook' },
+                { label: 'Rules', value: 'rules', description: 'Link to the rules' },
+                { label: 'Uniform', value: 'uniform', description: 'Link to the uniform' },
             ]);
 
         const row = new ActionRowBuilder().addComponents(selectMenu);
@@ -52,17 +39,11 @@ client.on('interactionCreate', async (interaction) => {
     let responseEmbed = new EmbedBuilder().setColor(0x0099ff);
 
     if (interaction.values[0] === 'handbook') {
-        // Send a private message with the Google Docs link
-        await interaction.user.send('Here is the link to the handbook: https://docs.google.com/your-handbook-link');
-        responseEmbed.setTitle('Handbook').setDescription('I sent you the handbook link in DMs.');
+        responseEmbed.setTitle('Handbook').setDescription('[Link to the Handbook](https://example.com)');
     } else if (interaction.values[0] === 'rules') {
-        // Mention the rules channel
-        responseEmbed.setTitle('Rules').setDescription('You can view the rules in the #rules channel.');
-        await interaction.reply({ embeds: [responseEmbed], ephemeral: true });
+        responseEmbed.setTitle('Rules').setDescription('Please check the #rules channel!');
     } else if (interaction.values[0] === 'uniform') {
-        // Send a private message with the uniform link
-        await interaction.user.send('Here is the link to the uniform: https://your-uniform-link');
-        responseEmbed.setTitle('Uniform').setDescription('I sent you the uniform link in DMs.');
+        responseEmbed.setTitle('Uniform').setDescription('[Uniform Link](https://example.com)');
     }
 
     await interaction.reply({ embeds: [responseEmbed], ephemeral: true });
