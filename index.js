@@ -37,7 +37,8 @@ client.on('interactionCreate', async (interaction) => {
                 .setTitle('**Information**')
                 .setDescription('Welcome to TLM! Make sure you read the Handbook, buy and wear the uniform, and check the rules before joining any deployments!');
 
-            await interaction.reply({ embeds: [embed], components: [row] });
+            // Send a message in the channel instead of replying
+            await interaction.channel.send({ embeds: [embed], components: [row] });
         }
     }
 
@@ -71,7 +72,8 @@ client.on('interactionCreate', async (interaction) => {
             );
         }
 
-        await interaction.reply({ embeds: [responseEmbed], ephemeral: true });
+        // Send a message in the channel instead of replying
+        await interaction.channel.send({ embeds: [responseEmbed] });
     }
 });
 
