@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config(); // This ensures the environment variables are loaded
 const { Client, GatewayIntentBits, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder } = require('discord.js');
 
 const client = new Client({
@@ -49,4 +49,5 @@ client.on('interactionCreate', async (interaction) => {
     await interaction.reply({ embeds: [responseEmbed], ephemeral: true });
 });
 
+// The bot will automatically use the token from the .env file
 client.login(process.env.TOKEN);
