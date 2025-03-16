@@ -26,8 +26,8 @@ client.on('interactionCreate', async (interaction) => {
 
         const embed = new EmbedBuilder()
             .setColor(0x0099ff)
-            .setTitle('Dropdown Menu')
-            .setDescription('Select an option from the menu below.');
+            .setTitle('**Information**') // Changed title
+            .setDescription('Welcome to TLM! Make sure you read the Handbook, wear the uniform, and check the rules before joining any deployments!'); // Updated description
 
         await interaction.reply({ embeds: [embed], components: [row] });
     }
