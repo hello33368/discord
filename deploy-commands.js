@@ -1,31 +1,21 @@
 const { SlashCommandBuilder } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config();
 
-const clientId = process.env.CLIENT_ID;
-const guildId = process.env.GUILD_ID;
+// Bot ID and Server ID directly included
+const botId = '1350787557134176266';  // Replace with your actual bot ID
+const serverId = '1332833538587885618';  // Replace with your actual server ID
 
-module.exports = (client) => {
-    const commands = [];
-    const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
+module.exports = {
+    deployCommands: async (client) => {
+        const commands = [
+            new SlashCommandBuilder().setName('dropdown').setDescription('Get information about TLM'),
+        ]
+            .map(command => command.toJSON());
 
-    // Read all the command files from the 'commands' folder
-    for (const file of commandFiles) {
-        const command = require(path.join(__dirname, 'commands', file));
-        commands.push(command.data.toJSON());
-    }
-
-    // Deploy commands to Discord
-    client.on('ready', async () => {
         try {
-            console.log('Started refreshing application (/) commands.');
-
-            await client.guilds.cache.get(guildId).commands.set(commands);
-
-            console.log('Successfully reloaded application (/) commands.');
+            await client.application.commands.set(commands, serverId);
+            console.log('Successfully registered application commands.');
         } catch (error) {
-            console.error(error);
+            console.error('Error deploying commands:', error);
         }
-    });
+    },
 };
