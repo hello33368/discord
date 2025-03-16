@@ -12,7 +12,7 @@ client.once('ready', () => {
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return;
 
-    if (interaction.commandName === 'menu') {
+    if (interaction.commandName === 'mymenu') {
         const selectMenu = new StringSelectMenuBuilder()
             .setCustomId('select')
             .setPlaceholder('Choose an option...')
