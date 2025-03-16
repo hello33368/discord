@@ -1,24 +1,19 @@
-require('dotenv').config(); // Load environment variables
-const { Client, GatewayIntentBits, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, SlashCommandBuilder } = require('discord.js');
+require('dotenv').config();  // Loads environment variables from .env file
+const { Client, GatewayIntentBits, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder } = require('discord.js');
+const { deployCommands } = require('./deploy-commands');  // Command deployment function
 
-// Create the client instance
+// Client setup
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
 });
 
-// Register slash commands
+// When the bot is ready
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
-
-    // Define the slash command for 'dropdown'
-    client.application.commands.create(
-        new SlashCommandBuilder()
-            .setName('dropdown')
-            .setDescription('Dropdown menu with information options')
-    );
+    deployCommands(client); // Deploy commands when the bot is ready
 });
 
-// Handle the '/dropdown' command
+// Interaction handling (for slash command)
 client.on('interactionCreate', async (interaction) => {
     if (interaction.isCommand()) {
         if (interaction.commandName === 'dropdown') {
@@ -43,7 +38,7 @@ client.on('interactionCreate', async (interaction) => {
         }
     }
 
-    // Handle dropdown selection
+    // Handling select menu interaction
     if (interaction.isStringSelectMenu()) {
         let responseEmbed = new EmbedBuilder().setColor(129936);
 
@@ -77,5 +72,5 @@ client.on('interactionCreate', async (interaction) => {
     }
 });
 
-// Login the bot using the token
+// Login with token from .env
 client.login(process.env.TOKEN);
