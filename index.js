@@ -1,13 +1,8 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder } = require('discord.js');
 
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers
-    ]
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
 });
 
 client.once('ready', () => {
@@ -17,22 +12,21 @@ client.once('ready', () => {
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return;
 
-    if (interaction.commandName === 'dropdown') {
+    if (interaction.commandName === 'menu') {
+        const selectMenu = new StringSelectMenuBuilder()
+            .setCustomId('select')
+            .setPlaceholder('Choose an option...')
+            .addOptions([
+                { label: 'Option 1', value: 'option_1', description: 'This is the first option' },
+                { label: 'Option 2', value: 'option_2', description: 'This is the second option' }
+            ]);
+
+        const row = new ActionRowBuilder().addComponents(selectMenu);
+
         const embed = new EmbedBuilder()
             .setColor(0x0099ff)
-            .setTitle('Choose an Option')
-            .setDescription('Select an option from the dropdown below.');
-
-        const row = new ActionRowBuilder().addComponents(
-            new StringSelectMenuBuilder()
-                .setCustomId('menu')
-                .setPlaceholder('Select an option...')
-                .addOptions([
-                    { label: 'Option 1', value: 'option_1' },
-                    { label: 'Option 2', value: 'option_2' },
-                    { label: 'Option 3', value: 'option_3' }
-                ])
-        );
+            .setTitle('Dropdown Menu')
+            .setDescription('Select an option from the menu below.');
 
         await interaction.reply({ embeds: [embed], components: [row] });
     }
@@ -41,15 +35,15 @@ client.on('interactionCreate', async (interaction) => {
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isStringSelectMenu()) return;
 
-    const selected = interaction.values[0];
+    let responseEmbed = new EmbedBuilder().setColor(0x0099ff);
 
-    if (selected === 'option_1') {
-        await interaction.reply('You selected Option 1!');
-    } else if (selected === 'option_2') {
-        await interaction.reply('You selected Option 2!');
-    } else if (selected === 'option_3') {
-        await interaction.reply('You selected Option 3!');
+    if (interaction.values[0] === 'option_1') {
+        responseEmbed.setTitle('You chose Option 1').setDescription('This is the first option.');
+    } else if (interaction.values[0] === 'option_2') {
+        responseEmbed.setTitle('You chose Option 2').setDescription('This is the second option.');
     }
+
+    await interaction.reply({ embeds: [responseEmbed], ephemeral: true });
 });
 
 client.login(process.env.TOKEN);
