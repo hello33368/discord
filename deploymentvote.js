@@ -27,7 +27,7 @@ module.exports = {
         const voteRoleMention = `<@&${voteRoleId}>`;
 
         const embed = new EmbedBuilder()
-            .setColor(129936)
+            .setColor(0x808080) // Gray color for neutral start
             .setTitle('**Deployment Vote Started!**')
             .setDescription(`${voteRoleMention}, a deployment vote has started! React with ✅ to vote.\n\n**Votes Required:** ${requiredVotes}`);
 
@@ -44,12 +44,11 @@ module.exports = {
                 currentVotes++;
 
                 if (currentVotes >= requiredVotes) {
-                    const deploymentChannelId = '1333049992411086879'; // Replace with actual channel ID
-
+                    // 🟢 DEPLOYMENT APPROVED - SEND FINAL MESSAGE
                     const deploymentEmbed = new EmbedBuilder()
-                        .setColor(129936)
-                        .setTitle('**DEPLOYMENT STARTED!**')
-                        .setDescription(`Make sure to review <#${deploymentChannelId}> and enjoy!`);
+                        .setColor(0x00ff00) // Green color for success
+                        .setTitle('**🚀 DEPLOYMENT STARTED! 🚀**')
+                        .setDescription(`Make sure to review <#1333049992411086879> and enjoy!`);
 
                     await interaction.channel.send({ content: voteRoleMention, embeds: [deploymentEmbed] });
 
