@@ -24,12 +24,12 @@ module.exports = {
 
         // 🎯 PING A SPECIFIC ROLE WHEN THE VOTE STARTS
         const voteRoleId = '1332980229886705685'; // Replace with the role ID you want to notify
-        const voteRoleMention = `<@&${voteRoleId}>`;  // Formats the role ping correctly
+        const voteRoleMention = `<@&${voteRoleId}>`;
 
         const embed = new EmbedBuilder()
             .setColor(129936)
             .setTitle('**Deployment Vote Started!**')
-            .setDescription(`${voteRoleMention}, a deployment vote has started! React with ✅ to vote.\n\n**Votes Required:** ${requiredVotes}\n**Current Votes:** ${currentVotes}`);
+            .setDescription(`${voteRoleMention}, a deployment vote has started! React with ✅ to vote.\n\n**Votes Required:** ${requiredVotes}`);
 
         const message = await interaction.reply({ content: voteRoleMention, embeds: [embed], fetchReply: true });
 
@@ -43,27 +43,17 @@ module.exports = {
                 votedUsers.add(user.id);
                 currentVotes++;
 
-                const updatedEmbed = new EmbedBuilder()
-                    .setColor(129936)
-                    .setTitle('**Deployment Vote Started!**')
-                    .setDescription(`${voteRoleMention}, a deployment vote has started! React with ✅ to vote.\n\n**Votes Required:** ${requiredVotes}\n**Current Votes:** ${currentVotes}`);
-
-                await message.edit({ embeds: [updatedEmbed] });
-
-                // ✅ IF REQUIRED VOTES REACHED, START DEPLOYMENT
                 if (currentVotes >= requiredVotes) {
-                    // 🎯 PING A SPECIFIC ROLE WHEN THE DEPLOYMENT STARTS
-                    const deploymentRoleId = '1332980229886705685'; // Replace with the role ID to ping when deployment starts
-                    const deploymentRoleMention = `<@&${deploymentRoleId}>`;
+                    const deploymentChannelId = '1333049992411086879'; // Replace with actual channel ID
 
                     const deploymentEmbed = new EmbedBuilder()
                         .setColor(129936)
-                        .setTitle('**Deployment Approved!**')
-                        .setDescription(`${deploymentRoleMention}, the deployment vote has passed! Prepare for deployment.`);
+                        .setTitle('**DEPLOYMENT STARTED!**')
+                        .setDescription(`Make sure to review <#${deploymentChannelId}> and enjoy!`);
 
-                    await interaction.channel.send({ content: deploymentRoleMention, embeds: [deploymentEmbed] });
+                    await interaction.channel.send({ content: voteRoleMention, embeds: [deploymentEmbed] });
 
-                    collector.stop(); // Stop collecting reactions
+                    collector.stop();
                 }
             }
         });
