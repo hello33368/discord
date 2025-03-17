@@ -16,23 +16,26 @@ module.exports = {
         let currentVotes = 0;
         let votedUsers = new Set();
 
-        // 🚨 CHECK IF USER HAS PERMISSION (SPECIFIC ROLE) 🚨
-        const requiredRoleId = '1351170771673808969';  // Change this to your required role ID
+        // 🚨 FETCH MEMBER TO ENSURE ROLE CACHE IS LOADED
+        await interaction.guild.members.fetch(interaction.user.id);
+
+        // 🚨 CHECK IF USER HAS REQUIRED ROLE
+        const requiredRoleId = '1351170771673808969'; // Change to your actual required role ID
         if (!interaction.member.roles.cache.has(requiredRoleId)) {
             return interaction.reply({ content: '❌ You do not have permission to start a deployment vote!', ephemeral: true });
         }
 
-        // 🎯 PING A ROLE WHEN THE VOTE STARTS
+        // 🎯 PING ROLE WHEN VOTE STARTS
         const voteRoleId = '1332980229886705685'; // Replace with your voting role ID
         const voteRoleMention = `<@&${voteRoleId}>`;
 
         // 📌 INITIAL EMBED
         const embed = new EmbedBuilder()
-            .setColor(0x1F8B4C) // ✅ Fixed color
+            .setColor(0x1F8B4C)
             .setTitle('**Deployment Vote Started!**')
             .setDescription(`A deployment vote has started! React with ✅ to vote.\n\n**Votes Required:** ${requiredVotes}`);
 
-        await interaction.deferReply(); // ✅ Prevents response errors
+        await interaction.deferReply();
         const message = await interaction.followUp({ content: voteRoleMention, embeds: [embed], fetchReply: true });
 
         // ✅ ADD REACTION
@@ -40,11 +43,12 @@ module.exports = {
             await message.react('✅');
         } catch (error) {
             console.error('Error adding reaction:', error);
+            return interaction.followUp({ content: '❌ Failed to add reaction!', ephemeral: true });
         }
 
-        // 🎯 COLLECTOR LOGIC
+        // 🎯 REACTION COLLECTOR LOGIC
         const filter = (reaction, user) => reaction.emoji.name === '✅' && !user.bot;
-        const collector = message.createReactionCollector({ filter });
+        const collector = message.createReactionCollector({ filter, time: 60000 }); // Stops after 60 seconds
 
         collector.on('collect', async (reaction, user) => {
             if (!votedUsers.has(user.id)) {
@@ -57,12 +61,18 @@ module.exports = {
 
                     // 🎉 FINAL EMBED - DEPLOYMENT APPROVED!
                     const deploymentEmbed = new EmbedBuilder()
-                        .setColor(0x1F8B4C) // ✅ Fixed color
+                        .setColor(0x1F8B4C)
                         .setTitle('**🚀 DEPLOYMENT STARTED! 🚀**')
                         .setDescription(`Make sure to review <#1333049992411086879> and enjoy!\n\n${voteRoleMention}`);
 
                     await interaction.channel.send({ content: voteRoleMention, embeds: [deploymentEmbed] });
                 }
+            }
+        });
+
+        collector.on('end', () => {
+            if (currentVotes < requiredVotes) {
+                interaction.channel.send({ content: '❌ Deployment vote failed! Not enough votes.' });
             }
         });
     }
