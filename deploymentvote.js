@@ -16,20 +16,21 @@ module.exports = {
         let currentVotes = 0;
         let votedUsers = new Set();
 
-        // 🚨 CHECK IF USER HAS A SPECIFIC ROLE BEFORE STARTING THE VOTE 🚨
-        const requiredRoleId = '1351170771673808969';  // Replace with the actual role ID
+        // 🚨 CHECK IF USER HAS PERMISSION (SPECIFIC ROLE) 🚨
+        const requiredRoleId = '1351170771673808969';  // Change this to your required role ID
         if (!interaction.member.roles.cache.has(requiredRoleId)) {
             return interaction.reply({ content: '❌ You do not have permission to start a deployment vote!', ephemeral: true });
         }
 
-        // 🎯 PING A SPECIFIC ROLE WHEN THE VOTE STARTS
-        const voteRoleId = '1332980229886705685'; // Replace with the role ID you want to notify
+        // 🎯 PING A ROLE WHEN THE VOTE STARTS
+        const voteRoleId = '1332980229886705685'; // Replace with your voting role ID
         const voteRoleMention = `<@&${voteRoleId}>`;
 
+        // 📌 INITIAL EMBED
         const embed = new EmbedBuilder()
-            .setColor(0x808080) // Gray color for neutral start
+            .setColor(129936)
             .setTitle('**Deployment Vote Started!**')
-            .setDescription(`${voteRoleMention}, a deployment vote has started! React with ✅ to vote.\n\n**Votes Required:** ${requiredVotes}`);
+            .setDescription(`A deployment vote has started! React with ✅ to vote.\n\n**Votes Required:** ${requiredVotes}`);
 
         const message = await interaction.reply({ content: voteRoleMention, embeds: [embed], fetchReply: true });
 
@@ -43,16 +44,17 @@ module.exports = {
                 votedUsers.add(user.id);
                 currentVotes++;
 
+                // ✅ CHECK IF REQUIRED VOTES ARE MET
                 if (currentVotes >= requiredVotes) {
-                    // 🟢 DEPLOYMENT APPROVED - SEND FINAL MESSAGE
+                    collector.stop(); // Stop collecting votes
+
+                    // 🎉 FINAL EMBED - DEPLOYMENT APPROVED!
                     const deploymentEmbed = new EmbedBuilder()
-                        .setColor(0x00ff00) // Green color for success
+                        .setColor(129936)
                         .setTitle('**🚀 DEPLOYMENT STARTED! 🚀**')
-                        .setDescription(`Make sure to review <#1333049992411086879> and enjoy!`);
+                        .setDescription(`Make sure to review <#1333049992411086879> and enjoy!\n\n${voteRoleMention}`);
 
                     await interaction.channel.send({ content: voteRoleMention, embeds: [deploymentEmbed] });
-
-                    collector.stop();
                 }
             }
         });
