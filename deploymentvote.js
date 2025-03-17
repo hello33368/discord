@@ -28,14 +28,21 @@ module.exports = {
 
         // 📌 INITIAL EMBED
         const embed = new EmbedBuilder()
-            .setColor(129936)
+            .setColor(0x1F8B4C) // ✅ Fixed color
             .setTitle('**Deployment Vote Started!**')
             .setDescription(`A deployment vote has started! React with ✅ to vote.\n\n**Votes Required:** ${requiredVotes}`);
 
-        const message = await interaction.reply({ content: voteRoleMention, embeds: [embed], fetchReply: true });
+        await interaction.deferReply(); // ✅ Prevents response errors
+        const message = await interaction.followUp({ content: voteRoleMention, embeds: [embed], fetchReply: true });
 
-        await message.react('✅');
+        // ✅ ADD REACTION
+        try {
+            await message.react('✅');
+        } catch (error) {
+            console.error('Error adding reaction:', error);
+        }
 
+        // 🎯 COLLECTOR LOGIC
         const filter = (reaction, user) => reaction.emoji.name === '✅' && !user.bot;
         const collector = message.createReactionCollector({ filter });
 
@@ -50,7 +57,7 @@ module.exports = {
 
                     // 🎉 FINAL EMBED - DEPLOYMENT APPROVED!
                     const deploymentEmbed = new EmbedBuilder()
-                        .setColor(129936)
+                        .setColor(0x1F8B4C) // ✅ Fixed color
                         .setTitle('**🚀 DEPLOYMENT STARTED! 🚀**')
                         .setDescription(`Make sure to review <#1333049992411086879> and enjoy!\n\n${voteRoleMention}`);
 
