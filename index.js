@@ -1,10 +1,20 @@
 require('dotenv').config();  // Loads environment variables from .env file
 const { Client, GatewayIntentBits, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder } = require('discord.js');
 const { deployCommands } = require('./deploy-commands');  // Command deployment function
+const deploymentVote = require('./deploymentvote');  // Import deployment vote system
+
+// Bot ID and Server ID directly included
+const botId = 'YOUR_BOT_ID';  // Replace with your actual bot ID
 
 // Client setup
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildMembers // Added for role checking
+    ]
 });
 
 // When the bot is ready
@@ -35,6 +45,11 @@ client.on('interactionCreate', async (interaction) => {
                 .setDescription('Welcome to TLM! Make sure you read the Handbook, buy and wear the uniform, and check the rules before joining any deployments!');
 
             await interaction.reply({ embeds: [embed], components: [row] });
+        } 
+        
+        // Handle deployment vote command
+        else if (interaction.commandName === 'deploymentvote') {
+            await deploymentVote.execute(interaction);
         }
     }
 
