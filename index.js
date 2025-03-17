@@ -1,7 +1,8 @@
-require('dotenv').config();  // Loads environment variables from .env file
+require('dotenv').config(); // Loads environment variables from .env file
 const { Client, GatewayIntentBits, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder } = require('discord.js');
-const { deployCommands } = require('./deploy-commands');  // Command deployment function
-const deploymentVote = require('./deploymentvote');  // Import deployment vote system
+const { deployCommands } = require('./deploy-commands'); // Command deployment function
+const deploymentVote = require('./deploymentvote'); // Import deployment vote system
+const forcedDeployment = require('./forcedeployments'); // Import forced deployment system
 
 // Client setup
 const client = new Client({
@@ -47,6 +48,11 @@ client.on('interactionCreate', async (interaction) => {
         // Handle deployment vote command
         else if (interaction.commandName === 'deploymentvote') {
             await deploymentVote.execute(interaction);
+        } 
+        
+        // Handle forced deployment command
+        else if (interaction.commandName === 'forcedeployment') {
+            await forcedDeployment.execute(interaction);
         }
     }
 
